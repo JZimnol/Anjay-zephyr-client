@@ -97,7 +97,9 @@ if(CONFIG_ANJAY_ZEPHYR_FACTORY_PROVISIONING_INITIAL_FLASH)
         src/factory_provisioning/provisioning_app.c)
 else()
     set(app_sources
-        src/main_app.c)
+        src/main_app.c
+        src/sensors.h
+        src/sensors.c)
 endif()
 
 target_sources(app PRIVATE

@@ -24,20 +24,25 @@
 #include <anjay_zephyr/lwm2m.h>
 #include <anjay_zephyr/objects.h>
 
+#include "sensors.h"
+
 LOG_MODULE_REGISTER(main_app);
+
 static avs_sched_handle_t update_objects_handle;
 
 struct anjay_zephyr_network_preferred_bearer_list_t anjay_zephyr_config_get_preferred_bearers(void);
 
 static int register_objects(anjay_t *anjay)
 {
-	(void) anjay;
+	sensors_install(anjay);
 	return 0;
 }
 
 static void update_objects(avs_sched_t *sched, const void *anjay_ptr)
 {
 	anjay_t *anjay = *(anjay_t *const *)anjay_ptr;
+
+	anjay_zephyr_ipso_sensors_update(anjay);
 
 	AVS_SCHED_DELAYED(sched, &update_objects_handle,
 			  avs_time_duration_from_scalar(1, AVS_TIME_S), update_objects, &anjay,
